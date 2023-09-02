@@ -1,0 +1,70 @@
+key_data[4]:
+1. SESSION_ID: { >= 0 }
+2. STUDENT_ID: { >= 0 }
+3. REPORTING_FORM: { Exam / Course / Test }
+4. NAME_SUBJECT: { all }
+
+fileds_session_data[9]:
+1. SURNAME_STUDENT: { all }
+2. NAME_STUDENT: { all }
+3. PATRONYMIC_STUDENT: { all }
+4. DATE: { all }
+5. TIME: { all }
+6. MARK: { { 0, 1 } or { 2, 3, 4, 5 }}
+7. SURNAME_TEACHER: { all }
+8. NAME_TEACHER: { all }
+9. PATRONYMIC_TEACHER: { all }
+
+allocator_name:
+1. allocator_list
+2. allocator_descriptor
+3. allocator_buddies
+        
+name_tree:
+1. RED_BLACK_TREE
+2. AVL_TREE
+3. SPLAY_TREE
+
+0. START [filename]
+
+1. ADD_POOL ADD_POOL [pool_name]
+file+ ALLOCATOR: [allocator_name]
+
+2. ADD_SCHEME [pool_name] [scheme_name]
+
+3. ADD_COLLECTION [pool_name] [scheme_name] [collection_name]
+file+  TREE: [name_tree]
+
+4. ADD [pool_name] [scheme_name] [collection_name]
+file+  key_data[4] and fileds_session_data[9]
+
+5. GET [pool_name] [scheme_name] [collection_name]
+file+  ID_SESSION_ID_STUDENT_REPORTING_FORM_NAME_SUBJECT, then key_data[4] or
+       fileds_session_data[1], then value, 
+       CURRENT
+
+6. GET_RANGE [pool_name] [scheme_name] [collection_name]
+file+  ID_SESSION_ID_STUDENT_REPORTING_FORM_NAME_SUBJECT, 
+       then key_data_lower[4] and key_data_upper[4]
+	or
+       fileds_session_data[1], 
+       then value_lower and value_upper
+       CURRENT
+
+7. UPDATE [pool_name] [scheme_name] [collection_name]
+file+  key_data[4], then
+       fileds_session_data[1]: new_value
+       fileds_session_data[2]: new_value
+			***
+	STOP_UPDATE
+
+8. REMOVE [pool_name] [scheme_name] [collection_name]
+file+  key_data[4]
+
+9. REMOVE_COLLECTION [pool_name] [scheme_name] [collection_name]
+
+10. REMOVE_SCHEME [pool_name] [scheme_name]
+
+11. REMOVE_POOL [pool_name]
+
+12. FINISH
